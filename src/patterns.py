@@ -152,4 +152,26 @@ class SpiralPattern(Pattern):
             cv2.line(canvas, points[i-1], points[i], color,self.thickness)
 
 class CirclePattern(Pattern):
-    def get_points(self, num):
+    def get_points(self, num_points:int = 1000)->list[Tuple[int,int]]:
+        points = []
+        radius = min(self.screen_width, self.screen_height) * 0.25
+        for i in range(num_points):
+            angle = ( i / num_points) * ( 2 * np.pi )
+            x = int(self.center_x + radius * np.cos(angle))
+            y = int(self.center_y + radius * np.sin(angle))
+            points.append(x,y)
+        return points
+
+    def draw_partial(self,
+                     canvas: np.ndarray,
+                     completion_ratio: float,
+                     color:[Tuple[int,int,int]] = (0,255,0),
+                     ):
+        """Draw partial circle"""
+        points = self.get_points(1000)
+        num_to_draw = int(len(points)*completion_ratio)
+        for i in range(1, num_to_draw):
+            cv2.line(canvas, points[i-1], points[i], color,self.thickness)
+
+class WavePattern(Pattern):
+    def get_points(self):
