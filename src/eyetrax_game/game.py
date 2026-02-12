@@ -9,7 +9,7 @@ from typing import Tuple
 
 import cv2
 import numpy as np
-from eyetrax.filters import AdaptiveKalmanSmoother,KalmanSmoother
+from eyetrax.filters import KalmanSmoother#, AdaptiveKalmanSmoother
 from eyetrax.gaze import GazeEstimator
 
 from .patterns import Pattern, PatternType, create_pattern
@@ -21,7 +21,7 @@ class Game:
             gaze_estimator: GazeEstimator,
             screen_width: int = 1920,
             screen_height: int = 1080,
-            use_adaptive_filter: bool = True
+            #use_adaptive_filter: bool = True
     ):
         """
         Initialize Game.
@@ -36,12 +36,12 @@ class Game:
         self.screen_height = screen_height
 
         # Gaze Filter
-        if use_adaptive_filter:
-            self.smoother = AdaptiveKalmanSmoother(adaptation_rate=0.9)
-        else:
-            from eyetrax.filters import make_kalman
-            kf = make_kalman
-            self.smoother=KalmanSmoother(kf)
+        #if use_adaptive_filter:
+            #self.smoother = AdaptiveKalmanSmoother(adaptation_rate=0.9)
+        #else:
+        from eyetrax.filters import make_kalman
+        kf = make_kalman
+        self.smoother=KalmanSmoother(kf)
 
         # Game state
         self.current_pattern: Pattern | None = None

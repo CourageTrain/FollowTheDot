@@ -26,3 +26,5 @@ def calibrate_for_game(camera_index: int = 0) -> GazeEstimator:
     except Exception as e:
         print(f"Error in EyeTrax: {e}")
         traceback.print_exc()
+        return None
+    return estimator

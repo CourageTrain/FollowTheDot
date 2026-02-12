@@ -3,3 +3,4 @@ src/*.egg-info/
 venv/
 .venv/
 *.pkl
+**/__pycache__/

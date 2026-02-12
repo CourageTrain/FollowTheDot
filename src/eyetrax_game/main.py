@@ -28,11 +28,11 @@ def main():
         default = "infinity",
         help = "Starting pattern ( default infinity"
     )
-    parser.add_argument(
-        "--no-adaptive",
-        action="store_true",
-        help = "Run in fullscreen mode"
-    )
+    # parser.add_argument(
+    #     "--no-adaptive",
+    #     action="store_true",
+    #     help = "Run in fullscreen mode"
+    # )
     parser.add_argument(
         "--fullscreen",
         action="store_true",
@@ -48,7 +48,7 @@ def main():
         sys.exit(1)
 
     #Get screen size
-    screen = cv2.getWindowImageProcessor()
+   # screen = cv2.setWindowImageProcessor()
     screen_width = 1920
     screen_height = 1080
     try:
@@ -64,7 +64,7 @@ def main():
         gaze_estimator,
         screen_width = screen_width,
         screen_height = screen_height,
-        use_adaptive_filter = not args.no_adaptive,
+        #use_adaptive_filter = not args.no_adaptive,
     )
 
     # Set starting pattern
@@ -141,7 +141,7 @@ def main():
 
             # Handle input
             key = cv2.waitKey(1) & 0xFF
-            if key == ord('q')
+            if key == ord('q'):
                 print("\n Game quit by user")
                 break
             elif key == ord('r'):
