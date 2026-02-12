@@ -102,4 +102,54 @@ class InfinityPattern(Pattern):
 
         return points
 
-    
+    def draw_partial(
+            self,
+            canvas: np.ndarray,
+            completion_ratio: float,
+            color: Tuple[int,int,int] = (0,255,0)
+    ) -> None:
+        """Draw partial infinity model"""
+        points = self.get_points(1000)
+        num_to_draw = int(len(points)*completion_ratio)
+        for i in range(1, num_to_draw):
+            cv2.line(canvas, points[i-1], points[i], color, self.thickness)
+
+class SpiralPattern(Pattern):
+    """Spiral pattern ( Archimedean spiral )"""
+    def get_points(self,num_points:int = 1000)-> list[Tuple[int, int]]:
+        points = []
+        a = 0.5 # Spiral density
+        max_radius = min(self.screen_width, self.screen_height) * 0.35
+
+        for i in range(num_points):
+            t = (i/num_points)*(6*np.pi) # 3 rotations
+            r = a * t
+
+            # Normalize radius
+            if r > max_radius:
+                r = max_radius
+
+            x = r * np.cos(t)
+            y = r * np.sin(t)
+
+            points.append(
+                int(self.center_x + x),
+                int(self.center_y + y)
+            )
+        return points
+
+    def draw_partial(
+            self,
+            canvas: np.ndarray,
+            completion_ratio: float,
+            color: Tuple[int, int, int] = (0,255,0)
+    ) -> None:
+        """Draw partial spiral"""
+        points = self.get_points(1000)
+        num_to_draw = int(len(points) * completion_ratio)
+
+        for i in range(1, num_to_draw):
+            cv2.line(canvas, points[i-1], points[i], color,self.thickness)
+
+class CirclePattern(Pattern):
+    def get_points(self, num):
