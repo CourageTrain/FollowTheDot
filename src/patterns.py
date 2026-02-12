@@ -195,6 +195,38 @@ class WavePattern(Pattern):
         for i in range(1, num_to_draw):
             cv2.line(canvas, points[i-1], points[i], color, self.thickness)
 
+class LissajousPattern(Pattern):
+    """Lissajous curve pattern"""
+    def get_points(self, num_points:int = 1000) -> list[Tuple[int, int]]:
+        """Generate lissajous curve points"""
+        points = []
+        scale_x = self.screen_width * 0.25
+        scale_y = self.screen_height * 0.25
+        a,b = 3,2 # frequence ratio
+        phase = np.pi / 4
+        for i in range(num_points):
+            t = (i / num_points) * ( 2 * np.pi )
+            x = scale_x * np.sin( a * t + phase)
+            y = scale_y * np.sin( b * t )
+            points.append((
+                int(self.center_x + x),
+                int(self.center_y + y)
+            ))
+        return points
+
+    def draw_partial(
+            self,
+            canvas: np.ndarray,
+            completion_ratio: float,
+            color: Tuple[int,int,int] = (0,255,0)
+    ) -> None:
+        """Draw partial lissajous curve"""
+        points = self.get_points(1000)
+        num_to_draw = int(len(points) * completion_ratio)
+
+        for i in range(1, num_to_draw):
+            cv2.line(canvas, points[i-1], points[i], color, self.thickness)
+
 def create_pattern(
         pattern_type: PatternType,
         screen_width: int,
