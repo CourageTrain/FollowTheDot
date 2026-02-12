@@ -195,3 +195,25 @@ class WavePattern(Pattern):
         for i in range(1, num_to_draw):
             cv2.line(canvas, points[i-1], points[i], color, self.thickness)
 
+def create_pattern(
+        pattern_type: PatternType,
+        screen_width: int,
+        screen_height: int,
+        thickness: int  = 5
+)-> Pattern:
+    """Factor function to create patterns."""
+    patterns = {
+        PatternType.INFINITY: InfinityPattern,
+        PatternType.SPIRAL : SpiralPattern,
+        PatternType.CIRCLE: CirclePattern,
+        PatternType.WAVE: WavePattern,
+        PatternType.LISSAJOUS: LissajousPattern,
+    }
+
+    pattern_class = patterns.get(pattern_type)
+
+    if not pattern_class:
+        raise ValueError(f"Unknown pattern type: {pattern_type}")
+
+    return pattern_class(screen_width, screen_height, thickness)
+
