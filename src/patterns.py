@@ -174,4 +174,24 @@ class CirclePattern(Pattern):
             cv2.line(canvas, points[i-1], points[i], color,self.thickness)
 
 class WavePattern(Pattern):
-    def get_points(self):
+    """Generate sine wave points"""
+    def get_points(self, num_points:int = 1000) -> list[Tuple[int,int]]:
+        points = []
+        amplitude = min(self.screen_width,self.screen_height) * 0.5
+        wavelength = min(self.screen_width,self.screen_height) * 0.3
+        for i in range(num_points):
+            x = int((i/num_points)*self.screen_width*0.8 + self.screen_width*0.1)
+            y = int(self.center_y + amplitude * np.sin((i/num_points) * (4*np.pi)))
+        return points
+
+    def draw_partial(self,
+                     canvas: np.ndarray,
+                     completion_ratio: float,
+                     color: Tuple[int, int, int] = (0, 255, 0)) -> None:
+        """Draw partial wave"""
+        points = self.get_points(1000)
+        num_to_draw = int(len(points) * completion_ratio)
+
+        for i in range(1, num_to_draw):
+            cv2.line(canvas, points[i-1], points[i], color, self.thickness)
+
