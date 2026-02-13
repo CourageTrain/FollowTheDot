@@ -3,10 +3,10 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "eyetrax-game"
+name = "followthedot"
 version = "0.1.0"
 description = "Eye tracking game using EyeTrax library"
-authors = [{name = "Your Name", email = "you@example.com"}]
+authors = [{name = "Vamsavardhana Vijay", email = "couragetrain@gmail.com"}]
 requires-python = ">=3.9"
 dependencies = [
     "eyetrax>=0.2.2",
@@ -21,4 +21,4 @@ dev = [
 ]
 
 [project.scripts]
-eyetrax-game = "eyetrax_game.main:main"
+followthedot = "eyetrax_game.main:main"
