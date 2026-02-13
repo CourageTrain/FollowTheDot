@@ -9,7 +9,7 @@ from typing import Tuple
 
 import cv2
 import numpy as np
-from eyetrax.filters import KalmanSmoother#, AdaptiveKalmanSmoother
+from eyetrax.filters import KalmanSmoother, KalmanEMASmoother
 from eyetrax.gaze import GazeEstimator
 
 from .patterns import Pattern, PatternType, create_pattern
@@ -37,7 +37,7 @@ class Game:
 
         # Gaze Filter
         if use_adaptive_filter:
-            self.smoother = AdaptiveKalmanSmoother(adaptation_rate=0.9)
+            self.smoother = KalmanEMASmoother(ema_alpha=0.9)
         else:
             from eyetrax.filters import make_kalman
             kf = make_kalman
