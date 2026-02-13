@@ -4,11 +4,13 @@ Main entry point for eye tracker game
 
 import argparse
 import sys
+import traceback
 
 import cv2
 import numpy as np
 
 from .calibration import calibrate_for_game
+from eyetrax.utils.screen import get_screen_size
 from .game import Game
 from .patterns import PatternType
 
@@ -28,11 +30,18 @@ def main():
         default = "infinity",
         help = "Starting pattern ( default infinity"
     )
-    # parser.add_argument(
-    #     "--no-adaptive",
-    #     action="store_true",
-    #     help = "Run in fullscreen mode"
-    # )
+    parser.add_argument(
+        "--calibration",
+        type = str,
+        choices = ["9p", "5p", "dense_grid"],
+        default = "9p",
+        help = "9 Point calibration pattern"
+    )
+    parser.add_argument(
+        "--no-adaptive",
+        action="store_true",
+        help = "Run in fullscreen mode"
+    )
     parser.add_argument(
         "--fullscreen",
         action="store_true",
@@ -42,29 +51,29 @@ def main():
 
     # Calibrate
     try:
-        gaze_estimator = calibrate_for_game(camera_index=args.camera)
+        gaze_estimator = calibrate_for_game(camera_index=args.camera, calibration_pattern = args.calibration)
     except KeyboardInterrupt:
         print("\n  Calibration cancelled by user")
         sys.exit(1)
 
-    #Get screen size
-   # screen = cv2.setWindowImageProcessor()
+    # Get screen size
+    # screen = cv2.setWindowImageProcessor()
+
     screen_width = 1920
     screen_height = 1080
     try:
-        import screeninfo
-        monitors = screeninfo.get_monitors()
-        screen_width = monitors[0].width
-        screen_height = monitors[0].height
-    except ImportError:
-        pass
+        screen_width, screen_height = get_screen_size()
+    except ImportError as e:
+        print("Import Error: ScreenInfo - can't be imported")
+        print(f"Import Error: {e}")
+        traceback.print_exc()
 
     # Create game
     game = Game(
         gaze_estimator,
         screen_width = screen_width,
         screen_height = screen_height,
-        #use_adaptive_filter = not args.no_adaptive,
+        use_adaptive_filter = not args.no_adaptive,
     )
 
     # Set starting pattern

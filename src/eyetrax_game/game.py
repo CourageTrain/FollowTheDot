@@ -21,7 +21,7 @@ class Game:
             gaze_estimator: GazeEstimator,
             screen_width: int = 1920,
             screen_height: int = 1080,
-            #use_adaptive_filter: bool = True
+            use_adaptive_filter: bool = True
     ):
         """
         Initialize Game.
@@ -36,12 +36,12 @@ class Game:
         self.screen_height = screen_height
 
         # Gaze Filter
-        #if use_adaptive_filter:
-            #self.smoother = AdaptiveKalmanSmoother(adaptation_rate=0.9)
-        #else:
-        from eyetrax.filters import make_kalman
-        kf = make_kalman
-        self.smoother=KalmanSmoother(kf)
+        if use_adaptive_filter:
+            self.smoother = AdaptiveKalmanSmoother(adaptation_rate=0.9)
+        else:
+            from eyetrax.filters import make_kalman
+            kf = make_kalman
+            self.smoother=KalmanSmoother(kf)
 
         # Game state
         self.current_pattern: Pattern | None = None

@@ -132,10 +132,10 @@ class SpiralPattern(Pattern):
             x = r * np.cos(t)
             y = r * np.sin(t)
 
-            points.append(
+            points.append((
                 int(self.center_x + x),
                 int(self.center_y + y)
-            )
+            ))
         return points
 
     def draw_partial(
@@ -159,7 +159,7 @@ class CirclePattern(Pattern):
             angle = ( i / num_points) * ( 2 * np.pi )
             x = int(self.center_x + radius * np.cos(angle))
             y = int(self.center_y + radius * np.sin(angle))
-            points.append(x,y)
+            points.append((x,y))
         return points
 
     def draw_partial(self,
